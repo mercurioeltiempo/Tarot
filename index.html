@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arcanos Mayores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #f3f3f3;
+      --muted: #b3b3b3;
+      --accent: #d6b36d;
+      --accent-soft: rgba(214,179,109,0.12);
+      --gradient: linear-gradient(135deg, #121216 0%, #1b1b22 100%);
+      --shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(214,179,109,0.08), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,0.03), transparent 30%);
+      z-index: -1;
+    }
+
+    header {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .symbol {
+      width: 120px;
+      height: 120px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      background: var(--surface);
+      backdrop-filter: blur(8px);
+      animation: float 5s ease-in-out infinite;
+      box-shadow: var(--shadow);
+    }
+
+    .symbol::before {
+      content: '✦';
+      font-size: 2.8rem;
+      color: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .scroll {
+      position: absolute;
+      bottom: 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    main {
+      width: min(1200px, 92%);
+      margin: auto;
+      padding-bottom: 8rem;
+    }
+
+    .section-title {
+      margin: 5rem 0 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .intro-card,
+    .arcana-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: transform 0.35s ease, border-color 0.35s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .intro-card:hover,
+    .arcana-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(214,179,109,0.35);
+    }
+
+    .intro-card h3,
+    .arcana-card h3 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .intro-card p,
+    .arcana-card p {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .arcana-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.8rem;
+      margin-top: 2rem;
+    }
+
+    .arcana-number {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.8rem;
+    }
+
+    .arcana-card a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.5rem;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .arcana-card a:hover {
+      opacity: 0.7;
+    }
+
+    .layers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .layer {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.55rem 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.02);
+    }
+
+    footer {
+      padding: 4rem 2rem;
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      border-top: 1px solid var(--border);
+      margin-top: 6rem;
+    }
+
+    @keyframes float {
+      0%,100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @media (max-width: 700px) {
+      header {
+        min-height: 85vh;
+      }
+
+      .arcana-card,
+      .intro-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="symbol"></div>
+  <h1>Arcanos Mayores</h1>
+  <p class="subtitle">
+    Una lectura visual y simbólica del viaje interior representado por los 22 arcanos mayores del tarot. Cada carta funciona como una capa psicológica, espiritual y narrativa dentro del proceso de transformación.
+  </p>
+  <div class="scroll">Explorar</div>
+</header>
+
+<main>
+
+  <section>
+    <h2 class="section-title">Capas del Tarot</h2>
+
+    <div class="intro-grid">
+      <article class="intro-card">
+        <h3>Simbología</h3>
+        <p>
+          Los arcanos operan mediante imágenes arquetípicas: figuras, animales, colores y gestos que condensan ideas complejas en formas visuales.
+        </p>
+      </article>
+
+      <article class="intro-card">
+        <h3>Psicología</h3>
+        <p>
+          Muchas lecturas modernas interpretan el tarot como un mapa de estados mentales, conflictos internos y procesos de individuación.
+        </p>
+      </article>
+
+      <article class="intro-card">
+        <h3>Esoterismo</h3>
+        <p>
+          Tradiciones herméticas relacionaron las cartas con astrología, alquimia, cábala y rituales iniciáticos.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Arcanos</h2>
+
+    <div class="arcana-grid">
+
+      <article class="arcana-card">
+        <div class="arcana-number">00</div>
+        <h3>El Loco</h3>
+        <p>
+          Representa el inicio del viaje. La energía caótica, el impulso hacia lo desconocido y la ruptura con las estructuras previas.
+        </p>
+        <div class="layers">
+          <span class="layer">Inicio</span>
+          <span class="layer">Caos</span>
+          <span class="layer">Potencial</span>
+        </div>
+        <a href="https://es.wikipedia.org/wiki/El_Loco_(Tarot)" target="_blank">
+          Expandir explicación →
+        </a>
+      </article>
+
+      <article class="arcana-card">
+        <div class="arcana-number">I</div>
+        <h3>El Mago</h3>
+        <p>
+          La capacidad de transformar intención en acción. Vinculado a la voluntad, la técnica y la manipulación de símbolos.
+        </p>
+        <div class="layers">
+          <span class="layer">Voluntad</span>
+          <span class="layer">Acción</span>
+          <span class="layer">Manifestación</span>
+        </div>
+        <a href="https://es.wikipedia.org/wiki/El_Mago_(Tarot)" target="_blank">
+          Expandir explicación →
+        </a>
+      </article>
+
+      <article class="arcana-card">
+        <div class="arcana-number">II</div>
+        <h3>La Sacerdotisa</h3>
+        <p>
+          El conocimiento oculto y silencioso. Una figura asociada a lo intuitivo, lo lunar y los secretos interiores.
+        </p>
+        <div class="layers">
+          <span class="layer">Intuición</span>
+          <span class="layer">Silencio</span>
+          <span class="layer">Misterio</span>
+        </div>
+        <a href="https://es.wikipedia.org/wiki/La_Papisa" target="_blank">
+          Expandir explicación →
+        </a>
+      </article>
+
+      <article class="arcana-card">
+        <div class="arcana-number">XIII</div>
+        <h3>La Muerte</h3>
+        <p>
+          No simboliza únicamente el final físico. Representa transformación, pérdida de identidad y transición hacia otro estado.
+        </p>
+        <div class="layers">
+          <span class="layer">Cambio</span>
+          <span class="layer">Ruptura</span>
+          <span class="layer">Renacimiento</span>
+        </div>
+        <a href="https://es.wikipedia.org/wiki/La_Muerte_(Tarot)" target="_blank">
+          Expandir explicación →
+        </a>
+      </article>
+
+      <article class="arcana-card">
+        <div class="arcana-number">XV</div>
+        <h3>El Diablo</h3>
+        <p>
+          La materia, el deseo y las cadenas psicológicas. Una carta ligada a compulsiones, excesos y fascinación.
+        </p>
+        <div class="layers">
+          <span class="layer">Deseo</span>
+          <span class="layer">Atadura</span>
+          <span class="layer">Instinto</span>
+        </div>
+        <a href="https://es.wikipedia.org/wiki/El_Diablo_(Tarot)" target="_blank">
+          Expandir explicación →
+        </a>
+      </article>
+
+      <article class="arcana-card">
+        <div class="arcana-number">XXI</div>
+        <h3>El Mundo</h3>
+        <p>
+          El cierre del ciclo. Integración entre experiencia, conciencia y totalidad simbólica.
+        </p>
+        <div class="layers">
+          <span class="layer">Integración</span>
+          <span class="layer">Cierre</span>
+          <span class="layer">Unidad</span>
+        </div>
+        <a href="https://es.wikipedia.org/wiki/El_Mundo_(Tarot)" target="_blank">
+          Expandir explicación →
+        </a>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Estructura Narrativa</h2>
+
+    <div class="intro-grid">
+      <article class="intro-card">
+        <h3>Viaje del héroe</h3>
+        <p>
+          Muchos autores interpretan los arcanos como una secuencia narrativa donde el sujeto atraviesa pruebas, crisis y mutaciones.
+        </p>
+      </article>
+
+      <article class="intro-card">
+        <h3>Transformación</h3>
+        <p>
+          El tarot puede entenderse como una tecnología simbólica orientada a reorganizar la percepción y el sentido.
+        </p>
+      </article>
+
+      <article class="intro-card">
+        <h3>Lectura contemporánea</h3>
+        <p>
+          Actualmente también se utiliza como herramienta estética, introspectiva y artística fuera de marcos estrictamente esotéricos.
+        </p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Diseño minimalista inspirado en sistemas herméticos, interfaces editoriales y estética nocturna contemporánea.
+</footer>
+
+</body>
+</html>
